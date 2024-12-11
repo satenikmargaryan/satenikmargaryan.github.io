@@ -1,27 +1,26 @@
-module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+  {
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+  },
+  {
+    languageOptions: {
+      globals: globals.browser,
     },
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'airbnb',
-  ],
-  plugins: ['react', '@typescript-eslint'],
-  rules: {
-    'react/react-in-jsx-scope': 'off', // React 17+ doesn't need this
-    'react/prop-types': 'off', // Disable prop-types as we use TypeScript
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-  },
-  settings: {
-    react: {
-      version: '19', // Specify React version 19
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  {
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
-};
+];
